@@ -1,13 +1,13 @@
 var rows = 10
 var cols = 10
-var bombs_count = 10
-var bombs = []
+var mines_count = 10
+var mines = []
 
 function getRandomInt(min, max) {
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function makegrid() {
+function makeGrid() {
 	var table = $('<table>').attr('id','minesweeper');
 	for (var row = 0; row < rows ; row++) {
 		var a_row = $('<tr>');
@@ -20,49 +20,49 @@ function makegrid() {
 	return table;
 };
 
-function put_bombs(){
-	for (var i = 0; i <= bombs_count; i++) {
-		bombs.push([getRandomInt(0,rows-1), getRandomInt(0,cols-1)]);
+function putMines(){
+	for (var i = 0; i <= mines_count; i++) {
+		mines.push([getRandomInt(0,rows-1), getRandomInt(0,cols-1)]);
 	}
 };
 
-function has_bomb(row, col){
-	var bomb = false
-	bombs.forEach(function(e){
+function hasMine(row, col){
+	var mine = false
+	mines.forEach(function(e){
 		if(e[0] == row && e[1] == col){
-			bomb = true
+			mine = true
 		};
 	});
-	return bomb;
+	return mine;
 }
 
-function count_neighbors_bombs(row, col) {
+function countNeighborsMines(row, col) {
 	count = 0
-	if(has_bomb(row-1,col-1)){count++};
-	if(has_bomb(row-1,col))  {count++};
-	if(has_bomb(row-1,col+1)){count++};
+	if(hasMine(row-1,col-1)){count++};
+	if(hasMine(row-1,col))  {count++};
+	if(hasMine(row-1,col+1)){count++};
 
-	if(has_bomb(row,col-1)){count++};
-	if(has_bomb(row,col+1)){count++};
+	if(hasMine(row,col-1)){count++};
+	if(hasMine(row,col+1)){count++};
 
-	if(has_bomb(row+1,col-1)){count++};
-	if(has_bomb(row+1,col))  {count++};
-	if(has_bomb(row+1,col+1)){count++};
+	if(hasMine(row+1,col-1)){count++};
+	if(hasMine(row+1,col))  {count++};
+	if(hasMine(row+1,col+1)){count++};
 
 	return count
 }
 
-function open_tile(td){
+function openTile(td){
 	var row = td.data('row');
 	var col = td.data('col');
 	console.log("click in row=" + row + " col=" + col );
 	td.removeClass('unopened')
-	if( has_bomb(row,col)){
+	if( hasMine(row,col)){
 		td.addClass('mine');
 	}
 	else
 	{
-		count = count_neighbors_bombs(row,col)
+		count = countNeighborsMines(row,col)
 		if(count == 0){
 			td.addClass('opened');
 		}
@@ -73,12 +73,12 @@ function open_tile(td){
 };
 
 $(document).ready(function() {
-	put_bombs();
-	var grid = makegrid();
+	putMines();
+	var grid = makeGrid();
 	$('#game').append(grid);
 
 	$('#minesweeper td').click(function(event){
-		open_tile($(this))
+		openTile($(this))
 	});
 });
 
