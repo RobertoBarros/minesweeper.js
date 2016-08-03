@@ -1,18 +1,18 @@
-rows = 10
-cols = 10
-bombs_count = 5
-bombs = []
+var rows = 10
+var cols = 10
+var bombs_count = 10
+var bombs = []
 
 function getRandomInt(min, max) {
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 function makegrid() {
-	table = $('<table>').attr('id','minesweeper');
+	var table = $('<table>').attr('id','minesweeper');
 	for (var row = 0; row < rows ; row++) {
-		a_row = $('<tr>');
+		var a_row = $('<tr>');
 		for (var col = 0; col < cols ; col++){
-			a_col = $('<td>').data('col', col).data('row', row).addClass('unopened');
+			var a_col = $('<td>').data('col', col).data('row', row).addClass('unopened');
 			a_row.append(a_col);
 		}
 		table.append(a_row);
@@ -53,8 +53,8 @@ function count_neighbors_bombs(row, col) {
 }
 
 function open_tile(td){
-	row = td.data('row');
-	col = td.data('col');
+	var row = td.data('row');
+	var col = td.data('col');
 	console.log("click in row=" + row + " col=" + col );
 	td.removeClass('unopened')
 	if( has_bomb(row,col)){
@@ -74,7 +74,7 @@ function open_tile(td){
 
 $(document).ready(function() {
 	put_bombs();
-	grid = makegrid();
+	var grid = makegrid();
 	$('#game').append(grid);
 
 	$('#minesweeper td').click(function(event){
